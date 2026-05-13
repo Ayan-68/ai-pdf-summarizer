@@ -1,4 +1,4 @@
-from google import genai
+from groq import Groq
 from pypdf import PdfReader
 import streamlit as st
 
