@@ -17,8 +17,8 @@ Upload a PDF document and generate an AI-powered summary.
 """)
 
 # Gemini client
-client = genai.Client(
-    api_key="YOUR_API_KEY"
+client = Groq(
+    api_key=st.secrets["API_KEY"]
 )
 
 # Upload PDF
@@ -68,12 +68,17 @@ if uploaded_file:
 
         with st.spinner("Generating summary..."):
 
-            response = client.models.generate_content(
-                model="gemini-3.1-flash-lite",
-                contents=prompt
+            response = client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ]
             )
 
-            summary = response.text.strip()
+            summary = response.choices[0].message.content.strip()
 
         st.success("✅ Summary Generated!")
 
